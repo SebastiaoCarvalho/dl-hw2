@@ -34,20 +34,16 @@ class CNN(nn.Module):
             self.pool2 = nn.MaxPool2d((2, 2))
             width = width // 2
             height = height // 2
-            self.fc1 = nn.Linear(width * height * 8, 320)
+            self.fc1 = nn.Linear(1, 320) # chanfe input size in forward method ????
             self.fc2 = nn.Linear(320, 120)
             self.fc3 = nn.Linear(120, n_classes)
         else:
             # Implementation for Q2.2
             raise NotImplementedError
-        
-        # Implementation for Q2.1 and Q2.2
-        raise NotImplementedError
-        
+
     def forward(self, x):
         # input should be of shape [b, c, w, h]
         # conv and relu layers
-        print(x.shape)
         x = self.conv1(x)
         x = self.relu(x)
         # max-pool layer if using it
@@ -63,8 +59,8 @@ class CNN(nn.Module):
             x = self.pool2(x)
         
         # prep for fully connected layer + relu
-        x = x.view(x.size(0), -1)
-        x = self.fc1(x)
+        x = x.view(x.shape[0], -1)
+        x = nn.Linear(x.shape[1], 320)(x)
         x = self.relu(x)
         
         # drop out
@@ -88,6 +84,8 @@ def train_batch(X, y, model, optimizer, criterion, **kwargs):
     criterion: loss function
     """
     optimizer.zero_grad()
+    features = X.shape[1]
+    X.resize_(X.shape[0], 1, int(np.sqrt(features)), int(np.sqrt(features)))
     out = model(X, **kwargs)
     loss = criterion(out, y)
     loss.backward()
@@ -155,11 +153,9 @@ def main():
     test_X, test_y = dataset.test_X, dataset.test_y
 
     n_classes = torch.unique(dataset.y).shape[0]
-    width = dataset.X.shape[1]
-    height = dataset.X.shape[2]
 
     # initialize the model
-    model = CNN(width, height, n_classes, opt.dropout, no_maxpool=opt.no_maxpool)
+    model = CNN(0, 0, n_classes, opt.dropout, no_maxpool=opt.no_maxpool)
     
     # get an optimizer
     optims = {"adam": torch.optim.Adam, "sgd": torch.optim.SGD}
