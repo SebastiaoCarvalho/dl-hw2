@@ -24,7 +24,7 @@ class CNN(nn.Module):
         self.drop = nn.Dropout(dropout_prob)
         if not no_maxpool:
             # Implementation for Q2.1
-            self.conv1 = nn.Conv2d(1, 8, (3, 3), padding=3-1)
+            self.conv1 = nn.Conv2d(1, 8, (3, 3), padding=1)
             self.pool1 = nn.MaxPool2d((2, 2))
             width = width // 2
             height = height // 2
@@ -85,7 +85,7 @@ def train_batch(X, y, model, optimizer, criterion, **kwargs):
     """
     optimizer.zero_grad()
     features = X.shape[1]
-    X.resize_(X.shape[0], 1, int(np.sqrt(features)), int(np.sqrt(features)))
+    X = X.view(X.shape[0], 1, int(np.sqrt(features)), int(np.sqrt(features)))
     out = model(X, **kwargs)
     loss = criterion(out, y)
     loss.backward()
@@ -95,6 +95,8 @@ def train_batch(X, y, model, optimizer, criterion, **kwargs):
 
 def predict(model, X):
     """X (n_examples x n_features)"""
+    features = X.shape[1]
+    X = X.view(X.shape[0], 1, int(np.sqrt(features)), int(np.sqrt(features)))
     scores = model(X)  # (n_examples x n_classes)
     predicted_labels = scores.argmax(dim=-1)  # (n_examples)
     return predicted_labels
@@ -118,7 +120,7 @@ def plot(epochs, plottable, ylabel='', name=''):
     plt.xlabel('Epoch')
     plt.ylabel(ylabel)
     plt.plot(epochs, plottable)
-    plt.savefig('%s.pdf' % (name), bbox_inches='tight')
+    plt.savefig('%s.png' % (name), bbox_inches='tight')
 
 
 def get_number_trainable_params(model):
