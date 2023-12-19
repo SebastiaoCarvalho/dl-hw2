@@ -72,6 +72,50 @@ This means that the complexity of computing $Z$ is quadratic in the length of th
 
 \subsection{Question 1.2}
 
+For this exercise we will use the McLaurin series expansion of the exponential function to approximate the softmax and reduce the computational 
+computational complexity. The McLaurin series expansion of the exponential function is given by:
+
+\bigskip
+
+$exp(t) = \sum_{n=0}^{\infty} \frac{t^n}{n!}$
+
+\bigskip
+
+First, considering $exp(t) \approx 1 + t + \frac{t^2}{2}, $ we want to create a feature map $\phi: \mathbb{R}^D \rightarrow \mathbb{R}^M$ such that, 
+for arbitrary $q \in \mathbb{R}^D$ and $k \in \mathbb{R}^D$ we have $exp(q^Tk) \approx \phi(q)^T \phi(k)$.
+
+With this, we want to find a mapping $\phi$ such that:
+$ \phi(q)^T \phi(k) = 1 + q^Tk + \frac{(q^Tk)^2}{2} $
+
+\bigskip
+
+The first two terms of the series are trivial, since we can define $\phi(q) = [1, q_1, \dots, q_n]$. 
+For the third term, we need to decompose the square of the dot product of $q$ and $k$ into a sum of products of the elements of $q$ and $k$.
+
+For vectors $x$ and $z$ with the same dimension $n$, we have that $x^Tz = \sum_{i=1}^{D} x_iz_i$.
+Now for the square of the doct product we have:
+
+\medskip
+
+$ (x^Tz)^2 = (x_1z_1 + \dots + x_n)(x_1z_1 + \dots + x_nz_n) = \\
+(x_1z_1)^2 + x_1z_1x_2z_2 + \dots + x_1z_1x_nz_n \\
+x2_1z_2x_1z_1 + (x_2z_2)^2 + \dots + x_2z_2x_nz_n \\
+\dots \\
+x_nz_nx_1z_1 + x_nz_nx_2z_2 + \dots + (x_nz_n)^2 = \\
+\sum_{i=1}^n (x_i)^2(z_i)^2 + \sum_{i=1}^{n} \sum_{j=i+1}^{n} x_iz_ix_jz_j \\
+$
+
+This way we can define $\phi(x) = [1, x_1, \dots, x_n, 
+\sqrt{\frac{1}{2}}x_1x_1, \sqrt{\frac{1}{2}}x_1x_2, \dots, \sqrt{\frac{1}{2}}x_1x_n, \sqrt{\frac{1}{2}}x_2x_1, \dots, 
+\sqrt{\frac{1}{2}}x_2x_n, \dots, \sqrt{\frac{1}{2}}x_nx_1 , \dots, \sqrt{\frac{1}{2}}x_nx_n]$
+
+With this $exp(q^Tk) \approx \phi(q)^T \phi(k)$, and we can use this to approximate the softmax function.
+
+\bigskip
+
+In terms of dimensionality, if the vector $x$ has dimension $D$, the vector $\phi(x)$ will have dimension $M = 1 + D + D^2$.
+
+
 \subsection{Question 1.3}
 
 \subsection{Question 1.4}
