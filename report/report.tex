@@ -115,6 +115,27 @@ With this $exp(q^Tk) \approx \phi(q)^T \phi(k)$, and we can use this to approxim
 
 In terms of dimensionality, if the vector $x$ has dimension $D$, the vector $\phi(x)$ will have dimension $M = 1 + D + D^2$.
 
+\bigskip
+
+Now we want to acess what would be the dimensionality of the feature space $M$ if we used the McLaurin series with $K \geq 3$ terms.
+For this, we have to acess the dimensionality of each term.
+
+\bigskip
+
+According to the multinomial theorem:
+
+\medskip
+
+$ (x_1 + x_2 + \dots + x_D)^K = \sum_{k_1 + k_2 + \dots + k_D = K, k_1, k_2, \dots, k_D\geq0} \binom{n}{k_1, k_2, \dots, k_D} \prod_{t=1}^D x_t^{k_t}$
+
+where $\binom{n}{k_1, k_2, \dots, k_D} = \frac{n!}{k_1!k_2!\dots k_D!}$
+
+\bigskip
+
+With this, we can see that for K = i, the multinomial theorem will have $D^i$ terms.
+With this, for $K \geq 3$, the dimensionality of the feature space will be:
+
+$M = \sum_{i=0}^{K} D^i$.
 
 \subsection{Question 1.3}
 
