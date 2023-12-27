@@ -138,8 +138,9 @@ def plot(epochs, plottable, ylabel='', name=''):
 
 
 def get_number_trainable_params(model):
-    ## TO IMPLEMENT - REPLACE return 0
-    return 0
+    model_parameters = filter(lambda p: p.requires_grad, model.parameters())
+    params = sum([np.prod(p.size()) for p in model_parameters])
+    return params
 
 
 def main():
