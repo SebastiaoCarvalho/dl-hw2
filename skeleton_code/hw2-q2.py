@@ -34,15 +34,21 @@ class CNN(nn.Module):
             self.pool2 = nn.MaxPool2d((2, 2))
             width = width // 2
             height = height // 2
-            
-            fc1_input_size = 16 * width * height 
-            self.fc1 = nn.Linear(fc1_input_size, 320)
-            self.fc2 = nn.Linear(320, 120)
-            self.fc3 = nn.Linear(120, n_classes)
-
         else:
             # Implementation for Q2.2
-            raise NotImplementedError   
+            self.conv1 = nn.Conv2d(1, 8, (3, 3), stride=2, padding=1)
+            width = width // 2
+            height = height // 2
+
+            self.conv2 = nn.Conv2d(8, 16, (3, 3), stride=2, padding=0)
+            width = (width - 2) // 2
+            height = (height - 2) // 2
+
+        
+        fc1_input_size = 16 * width * height
+        self.fc1 = nn.Linear(fc1_input_size, 320)
+        self.fc2 = nn.Linear(320, 120)
+        self.fc3 = nn.Linear(120, n_classes)
         
         self.relu = nn.ReLU()
         self.drop = nn.Dropout(dropout_prob)
@@ -52,6 +58,7 @@ class CNN(nn.Module):
         # first convolutional layer + relu
         x = self.conv1(x)
         x = self.relu(x)
+
         # max-pool layer if using it
         if not self.no_maxpool:
             x = self.pool1(x)
