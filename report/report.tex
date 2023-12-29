@@ -98,22 +98,24 @@ Now for the square of the doct product we have:
 \medskip
 
 $ (x^Tz)^2 = (x_1z_1 + \dots + x_n)(x_1z_1 + \dots + x_nz_n) = \\
-(x_1z_1)^2 + x_1z_1x_2z_2 + \dots + x_1z_1x_nz_n \\
-x2_1z_2x_1z_1 + (x_2z_2)^2 + \dots + x_2z_2x_nz_n \\
-\dots \\
-x_nz_nx_1z_1 + x_nz_nx_2z_2 + \dots + (x_nz_n)^2 = \\
-\sum_{i=1}^n (x_i)^2(z_i)^2 + \sum_{i=1}^{n} \sum_{j=i+1}^{n} x_iz_ix_jz_j \\
+(x_1z_1)^2 + 2x_1z_1x_2z_2 + \dots + 2x_1z_1x_nz_n + \\
++ (x_2z_2)^2 + \dots + x_2z_2x_nz_n + \\
+\dots + \\
+ (x_nz_n)^2 = \\
+\sum_{i=1}^n (x_i)^2(z_i)^2 + 2\sum_{i=1}^{n-1} \sum_{j=i+1}^{n} x_iz_ix_jz_j \\
 $
 
 This way we can define $\phi(x) = [1, x_1, \dots, x_n, 
-\sqrt{\frac{1}{2}}x_1x_1, \sqrt{\frac{1}{2}}x_1x_2, \dots, \sqrt{\frac{1}{2}}x_1x_n, \sqrt{\frac{1}{2}}x_2x_1, \dots, 
-\sqrt{\frac{1}{2}}x_2x_n, \dots, \sqrt{\frac{1}{2}}x_nx_1 , \dots, \sqrt{\frac{1}{2}}x_nx_n]$
+\frac{1}{\sqrt{2}}x_1^{2}, x_1x_2, \dots, x_1x_n, \frac{1}{\sqrt{2}}x_2^{2}, \dots, 
+x_2x_n, \dots, x_{n-1}x_n , \frac{1}{\sqrt{2}}x_n^{2}]$
 
 With this $exp(q^Tk) \approx \phi(q)^T \phi(k)$, and we can use this to approximate the softmax function.
 
 \bigskip
 
-In terms of dimensionality, if the vector $x$ has dimension $D$, the vector $\phi(x)$ will have dimension $M = 1 + D + D^2$.
+In terms of dimensionality, if the vector $x$ has dimension $D$, the first two terms of the series will have dimension $D + 1$. From the 
+third term, we can see that the number of terms will be $\sum_{i=1}^{D} i = \frac{D(D+1)}{2}$. With this, for $K = 2$, 
+the vector $\phi(x)$ will have dimension $M = 1 + D + \frac{D(D+1)}{2}$.
 
 \bigskip
 
@@ -132,10 +134,14 @@ where $\binom{n}{k_1, k_2, \dots, k_D} = \frac{n!}{k_1!k_2!\dots k_D!}$
 
 \bigskip
 
-With this, we can see that for K = i, the multinomial theorem will have $D^i$ terms.
+According to this theorem, the number of multinomial coefficients is given by $\binom{K + D - 1}{D - 1}$, and thus, the number of terms in the expansion for the $K-th$ is
+$\binom{K + D - 1}{D - 1}$.
+
+\bigskip
+
 With this, for $K \geq 3$, the dimensionality of the feature space will be:
 
-$M = \sum_{i=0}^{K} D^i$.
+$M = \sum \binom{K + D - 1}{D - 1}$
 
 \subsection{Question 1.3}
 
