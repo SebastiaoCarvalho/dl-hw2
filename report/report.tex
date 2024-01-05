@@ -248,8 +248,27 @@ accuracy results.
 \subsection{Question 3.2}
 
 \subsection{Question 3.3}
+To compare the performance of our two models, it's important to first understand
+how they process the text input. The LSTM model, processes the text input
+token by token, maintaining a hidden state that captures and carries relevant 
+information, so that the model can keep track of long term dependencies within
+the sequence. The model with the attention mechanism, on the other hand, processes 
+the text input all at once, assigning weights to different parts of the text, 
+which allows the model to prioritize specific parts of the input.
+
+After examining the performance of our models, we see that the LSTM model starts 
+with a  lower initial loss, indicating a better initial understanding of the 
+sequential data. In contrast, the model with the attention mechanism, 
+starts with a higher loss and has its decrease accentuated, after the third epoch,
+where the difference between the losses of both models reaches its max value. 
+While the LSTM model has a more stable decrease in loss, the model with the
+attention mechanism has a more accentuated decrease in loss, which might indicate
+that, after the third epoch, the model with the attention mechanism has assigned 
+appropriately the weights and so, it achieves a better understanding of the input
+sequence.
 
 \subsection{Question 3.4}
+
 
 \section{Credits}
 
