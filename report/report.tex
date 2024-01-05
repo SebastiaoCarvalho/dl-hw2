@@ -248,13 +248,13 @@ accuracy results.
 \subsection{Question 3.2}
 
 \subsection{Question 3.3}
-To compare the performance of our two models, it's important to first understand
-how they process the text input. The LSTM model, processes the text input
+To compare the performance of our two models, it's important to understand
+their distinct approaches in processing text input. The LSTM model, processes the text input
 token by token, maintaining a hidden state that captures and carries relevant 
 information, so that the model can keep track of long term dependencies within
 the sequence. The model with the attention mechanism, on the other hand, processes 
-the text input all at once, assigning weights to different parts of the text, 
-which allows the model to prioritize specific parts of the input.
+the text input as a whole, assigning weights to different parts of the text, 
+which allows the model to prioritize specific segments of the input.
 
 After examining the performance of our models, we see that the LSTM model starts 
 with a  lower initial loss, indicating a better initial understanding of the 
@@ -267,15 +267,39 @@ that, after the third epoch, the model with the attention mechanism has assigned
 appropriately the weights and so, it achieves a better understanding of the input
 sequence.
 
+Lastly, we can also look at the predicted output of both models, to see how they
+performed. The LSTM model, generates predictions where individual words appear
+more coherent in isolation. In contrast, the model with the attention mechanism,
+generates word predictions that are more similar to the target, but don't make sense
+individually. This is likely due to the attention mechanism's capacity to focus on 
+different parts of the input sequence and draw correlations that, in this case,
+similarity prioritize similarity over standalone word coherence.
+
+
 \subsection{Question 3.4}
+In our program, we analyse three types of similarity metrics: Jaccard, cosine, 
+and Damerau-Levenshtein. The Jaccard similarity, evaluates proportion of unique words shared 
+between the two texts, relative to the total unique words in both. The cosine similarity, on the other hand, measures  
+the similarity in the orientation of the word frequency vectors. Lastly, the Damerau-Levenshtein 
+similarity calculates the number of operations (insertions, deletions, substitutions, and transpositions) 
+needed to change one string into another.
+
+Looking at the results obtained, we see that both the Jaccard and cosine similarities
+had great increases in performance, when compared to their baseline scores. The Damerau-Levenshtein 
+similarity, also had an increase in performance, but not as significant as the other two. 
+This indicates that the models, still struggles with character level predictions, which can be 
+confirmed by looking at the predicted output, where there are a lot of words that don't exist, 
+but are similar to the target phrase words. 
 
 
 \section{Credits}
 
 \section{Sources}
-
 \begin{itemize}
     \item \href{https://www.educative.io/answers/what-is-a-max-pooling-layer-in-cnn}{What is a max pooling layer in CNN?}
+    \item \href{https://www.quora.com/What-exactly-is-the-difference-between-LSTM-and-attention-in-neural-networks#:~:text=In%20summary%2C%20while%20LSTM%20is,performance%20of%20neural%20network%20models.}{What exactly is the difference between LSTM and attention in neural networks?}
+    \item \href{https://medium.com/swlh/a-simple-overview-of-rnn-lstm-and-attention-mechanism-9e844763d07b}{A simple overview of RNN, LSTM and Attention Mechanism}
+    \item \href{https://www.linkedin.com/advice/3/what-pros-cons-using-cosine-similarity-vs}{What are the pros and cons of using cosine similarity vs. Jaccard similarity for text analysis?}
+    \item \href{https://medium.com/@evertongomede/the-damerau-levenshtein-distance-a-powerful-measure-for-string-similarity-22dc4b150f0a}{The Damerau-Levenshtein Distance: a Powerful Measure for String Similarity}
 \end{itemize}
-
 \end{document}
