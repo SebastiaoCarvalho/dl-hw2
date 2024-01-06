@@ -233,8 +233,10 @@ Since $\Phi(K)^T$ is $M\times L$ and $V$ is $L\times D$, the complexity of $\Phi
 The second product has $\Phi(Q)$, which is $L\times M$, and the result of the previous product, which is $M\times D$. So the complexity of this product is $O(L M D)$. 
 The result of this product is a matrix of size $L\times D$.
 
-The last product has $D^{-1}$, which is $L\times L$, and the result of the previous product, which is $L\times D$. So the complexity of this product is $O(L^2 D)$. The difference
-with this product is that in reallity, we only have $L$ cells that are not zero, so we only need to do $L$ multiplications, which gives us a complexity of $O(L D)$.
+The last product has $D^{-1}$, which is $L\times L$, and the result of the previous product, which is $L\times D$. So the complexity of this product is $O(L^2 D)$. 
+To avoid a complexity that is squared in $L$, we cannot do this product. Since $D^{-1}$ is a diagonal matrix, in reality we don't need to do this product, but only need to divide
+each row of the previous product by the corresponding cell of $D^{-1}$. So the complexity of this operation is $O(L D)$, since division is $O(1)$ and there are 
+$L \times D$ cells to divide.
 
 \bigskip
 
