@@ -265,11 +265,11 @@ The following plots were generated:
 The final test accuracy was 0.8280.
 
 \subsection{Question 2.2}
-The performance of this network was slightly worse than the previous one, 
+Using the best learning rate from the previous question ($\eta=0.01$), the performance of this network was slightly worse,
 having achieved a final test accuracy of 0.8147.
 
 \subsection{Question 2.3}
-Both network present the same number of parameters, 224892.
+Both networks present the same number of parameters, 224892.
 The difference in performance between the two networks, resides in the use 
 of max pooling layers. Max pooling can help the network focusing on the most
 important features, making the network more robust to small changes in the
@@ -383,13 +383,15 @@ the similarity in the orientation of the word frequency vectors. Lastly, the Dam
 similarity calculates the number of operations (insertions, deletions, substitutions, and transpositions) 
 needed to change one string into another.
 
-Looking at the results obtained, we see that both the Jaccard and cosine similarities
-had great increases in performance, when compared to their baseline scores. The Damerau-Levenshtein 
-similarity, also had an increase in performance, but not as significant as the other two. 
-This indicates that the models, still struggles with character level predictions, which can be 
-confirmed by looking at the predicted output, where there are a lot of words that don't exist, 
-but are similar to the target phrase words. 
+Comparing both models, we can verify that the model with the attention mechanism, had greater performance
+in all three metrics, when compared to the LSTM model. For the two models, we can verify that both the Jaccard 
+and cosine similarities had great increases in performance, when compared to their baseline scores. The Damerau-Levenshtein 
+similarity, also had an increase in performance, but not as significant as the other two.
 
+The difference in Damerau-Levenshtein similarity, between the two models, can be explained by the fact that,
+while the LSTM model, generates predictions that are more coherent in isolation, the model with the attention mechanism,
+generates predictions that are more similar to the target, but don't make sense individually. Overall, the fact that the
+this metric is not as high as the other two, indicates that the models still struggle with character level predictions.
 
 \section{Credits}
 
