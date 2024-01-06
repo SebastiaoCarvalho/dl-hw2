@@ -134,8 +134,17 @@ where $\binom{n}{k_1, k_2, \dots, k_D} = \frac{n!}{k_1!k_2!\dots k_D!}$
 
 \bigskip
 
-According to this theorem, the number of multinomial coefficients is given by $\binom{K + D - 1}{D - 1}$, and thus, the number of terms in the expansion for the $K-th$ is
-$\binom{K + D - 1}{D - 1}$.
+To prove the number of terms in the expansion for the $K-th$ term is $\binom{K + D - 1}{D - 1}$, we will use the star and bars method.
+
+We know that from combinatorics, for any pair of positive integers $n$ and $k$, the number of $k$-tuples of non-negative integers whose sum is $n$ is equal to the number of 
+multisets of cardinality $n$ taken from a set of size $k$, or equivalently, the number of multisets of cardinality $k - 1$ taken from a set of size $n + 1$.
+
+Using the stars and bars methods, to show that there are $\binom{K + D -1}{D - 1}$ possible arrangements, observe that any arrangement of stars and bars consists of a 
+total of $D + K - 1$ objects, $K$ of which are stars and $D - 1$ of which are bars. We only need to pick $D - 1$ of the $K + D - 1$ 
+positions to be bars. 
+
+Since $k_1 + k_2 + \dots + k_D = K$, we can apply this combinatorics theorem and know that the number of $k$-tuples of non-negative integers whose sum is $K$ is equal to
+$\binom{K + D - 1}{D - 1}$, and thus, the number of terms in the expansion for the $K-th$ term is $\binom{K + D - 1}{D - 1}$.
 
 \bigskip
 
