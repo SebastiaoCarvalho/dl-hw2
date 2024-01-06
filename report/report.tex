@@ -145,6 +145,65 @@ $M = \sum \binom{K + D - 1}{D - 1}$
 
 \subsection{Question 1.3}
 
+In the previous exercise, we defined the feature map $\phi: \mathbb{R^D} \rightarrow \mathbb{R^M}$, such that $exp(q^Tk) \approx \phi(q)^T\phi(k)$. 
+Now let's consider the mapping $\Phi$ where $\Phi(X)$, which results in a matrix whose rows are $\phi(x_i)$, where $x_i$ is the $i$-th row of $X$.
+
+Our goal is to show that the self-attention operation can be approximated as $Z \approx D^{-1}\Phi(Q) \Phi(K)^T V$, 
+where $D = Diag(\Phi(Q) \Phi(K)^T 1_L)$. 
+
+Looking at the original self-attention operation, we can see that the diffence is that now we want to approximate
+$softmax(QK^T)$ as $D^{-1}\Phi(Q) \Phi(K)^T$.
+
+Considering $softmax(QK^T)_{ij} = \frac{exp(q_i^Tk_j)}{\sum_{l=1}^L exp(q_i^Tk_l)}$, since we want
+$softmax(QK^T) \approx D^{-1}\Phi(Q) \Phi(K)^T$, we can see that $D^{-1}$ will correspond to the denominator of the softmax operation,
+and $\Phi(Q) \Phi(K)^T$ will correspond to the numerator.
+
+\bigskip
+
+Let's focus on the $\Phi(Q) \Phi(K)^T$ part. We know that this is the same as:
+
+\medskip
+
+$
+    \Phi(Q) \Phi(K)^T = 
+    \begin{bmatrix}
+        --- \phi(q_1) --- \\
+        --- \phi(q_2) --- \\
+        \vdots \\
+        --- \phi(q_L) --- \\
+    \end{bmatrix}
+    \begin{bmatrix}
+        | & | & \dots & | \\
+        \phi(k_1) & \phi(k_2) & \dots & \phi(k_L) \\
+        | & | & \dots & | \\
+    \end{bmatrix}
+$
+
+\medskip
+
+Since $\phi(q_i)$ is spread along the $i$-th row, for the $(i,j)$-th element of the matrix $\Phi(Q) \Phi(K)^T$ we have that cell $i,j$ is equal to $
+phi(q_i)_1 \phi(k_j)_1 + phi(q_i)_2 \phi(k_j)_2 + \dots + phi(q_i)_M \phi(k_j)_M = \phi(q_i)^T \phi(k_j)$.
+
+With this we can see that $\Phi(Q) \Phi(K)^T$ is a matrix whose $(i,j)$-th element is $\phi(q_i)^T \phi(k_j)$.
+
+We know that $\phi(q)^T\phi(k) \approx exp(q^Tk)$, so we can see that $\Phi(Q) \Phi(K)^T$ is a matrix whose $(i,j)$-th element is an 
+approximation $exp(q_i^Tk_j)$.
+
+\bigskip
+
+Now let's look at $D$. We know that $D = Diag(\Phi(Q) \Phi(K)^T 1_L)$. Since $\Phi(Q) \Phi(K)^T$ is a matrix whose $(i,j)$-th element is an
+approximation $exp(q_i^Tk_j)$, and $1_L$ is a vector of ones, the product $\Phi(Q) \Phi(K)^T 1_L$ will be a vector whose $i$-th element
+is an approximation of $\sum_{j=1}^L exp(q_i^Tk_j)$, since it is the sum of the $i$-th row of $\Phi(Q) \Phi(K)^T$.
+
+With this, we can see that $D \in \mathbb{R}^{L\times L}$ is a diagonal matrix whose $(i, i)$-th element is an approximation of $\sum_{j=1}^L exp(q_i^Tk_j)$.
+Since this is a diagonal matrix, and the inverse of a diagonal matrix is a diagonal matrix whose $(i, i)$-th element is the inverse of the $(i, i)$-th element
+we can see that $D^{-1}$ is a diagonal matrix whose $(i, i)$-th element is an approximation of $\frac{1}{\sum_{j=1}^L exp(q_i^Tk_j)}$.
+
+\bigskip
+
+Now that we have $D^{-1}$ and $\Phi(Q) \Phi(K)^T$, we can see that $D^{-1}\Phi(Q) \Phi(K)^T$ is a matrix whose $(i,j)$-th element is an approximation of
+the softmax operation, which is what we wanted to show. With this, we can see that $Z = softmax(QK^T)V \approx D^{-1}\Phi(Q) \Phi(K)^T V$.
+
 \subsection{Question 1.4}
 
 \section{Question 2}
