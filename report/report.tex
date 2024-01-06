@@ -97,11 +97,9 @@ Now for the square of the doct product we have:
 
 \medskip
 
-$ (x^Tz)^2 = (x_1z_1 + \dots + x_n)(x_1z_1 + \dots + x_nz_n) = \\
-(x_1z_1)^2 + 2x_1z_1x_2z_2 + \dots + 2x_1z_1x_nz_n + 
-+ (x_2z_2)^2 + \dots + x_2z_2x_nz_n + \dots + (x_nz_n)^2 = \\
-\sum_{i=1}^n (x_i)^2(z_i)^2 + 2\sum_{i=1}^{n-1} \sum_{j=i+1}^{n} x_iz_ix_jz_j$\\
-
+$ (x^Tz)^2 = (x_1z_1 + \dots + x_n)(x_1z_1 + \dots + x_nz_n) = (x_1z_1)^2 + 2x_1z_1x_2z_2 + \dots + 2x_1z_1x_nz_n + \\
++ (x_2z_2)^2 + \dots + x_2z_2x_nz_n + \dots + (x_nz_n)^2 = \sum_{i=1}^n (x_i)^2(z_i)^2 + 2\sum_{i=1}^{n-1} \sum_{j=i+1}^{n} x_iz_ix_jz_j \\
+$
 
 This way, we can define $\phi(x) = [1, x_1, \dots, x_n, 
 \frac{1}{\sqrt{2}}x_1^{2}, x_1x_2, \dots, x_1x_n, \frac{1}{\sqrt{2}}x_2^{2}, \dots, 
@@ -112,8 +110,8 @@ With this, $exp(q^Tk) \approx \phi(q)^T \phi(k)$, and we can use this to approxi
 \bigskip
 
 In terms of dimensionality, if the vector $x$ has dimension $D$, the first two terms of the series will have dimension $D + 1$. From the 
-third term, we can see that the number of terms will be $\sum_{i=1}^{D} i = \frac{D(D+1)}{2}$. With this, for $K = 2$, 
-the vector $\phi(x)$ will have dimension $M = 1 + D + \frac{D(D+1)}{2}$.
+third term, we can see that the number of terms will be $\sum_{i=1}^{D} i$, and this sum has a known closed form, which is $\frac{D(D+1)}{2}$. 
+With this, and considering $K$ as the degree of the polynomial, for $K = 2$, the vector $\phi(x)$ will have dimension $M = 1 + D + \frac{D(D+1)}{2}$.
 
 \bigskip
 
@@ -400,8 +398,29 @@ this metric is not as high as the other two, indicates that the models still str
 
 \section{Credits}
 
+Each member contributed to the following questions:
+
+\begin{itemize}
+    \item Sebastião Carvalho 
+    \begin{itemize}
+        \item Question 1.1, 1.2, 1.3 and 1.4
+        \item Question 2.1
+    \end{itemize}
+    \item Frederico Silva
+    \begin{itemize}
+        \item Question 2.2 and 2.3
+        \item Question 3.1, 3.2, 3.3 and 3.4
+    \end{itemize}
+\end{itemize}
+
+\smallskip
+
+The divison was done to ensure that each member contributed equally to the project.
+
 \section{Sources}
 \begin{itemize}
+    \item \href{https://en.wikipedia.org/wiki/Multinomial_theorem}{Multinomial theorem}
+    \item \href{https://en.wikipedia.org/wiki/Stars_and_bars_(combinatorics)}{Stars and bars (combinatorics)}
     \item \href{https://www.educative.io/answers/what-is-a-max-pooling-layer-in-cnn}{What is a max pooling layer in CNN?}
     \item \href{https://www.quora.com/What-exactly-is-the-difference-between-LSTM-and-attention-in-neural-networks#:~:text=In%20summary%2C%20while%20LSTM%20is,performance%20of%20neural%20network%20models.}{What exactly is the difference between LSTM and attention in neural networks?}
     \item \href{https://medium.com/swlh/a-simple-overview-of-rnn-lstm-and-attention-mechanism-9e844763d07b}{A simple overview of RNN, LSTM and Attention Mechanism}
