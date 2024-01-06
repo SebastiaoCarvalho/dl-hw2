@@ -206,6 +206,42 @@ the softmax operation, which is what we wanted to show. With this, we can see th
 
 \subsection{Question 1.4}
 
+Now we wish to use the above approximation to obtain a computanional complexity that is linear in L. First let us compute the computanional complexity of the
+approximation. First we need the complexity of calculating $\Phi(Q)$ and $\Phi(K)$.
+
+Since to compute each row of $\Phi(Q)$ and $\Phi(K)$ we need to compute $\phi(q_i)$ and $\phi(k_i)$, and the complexity of this is $O(M)$, 
+the complexity of calculating $\Phi(Q)$ and $\Phi(K)$ is $O(L M)$.
+
+\bigskip
+
+Now the complexity of calculating $D^{-1}$. This is a diagonal matrix of the inverse of the sum of the rows of $\Phi(Q) \Phi(K)^T$. So the cost of computing $D^{-1}$ is the cost
+of computing the sum of the rows of $\Phi(Q) \Phi(K)^T$. We know that $(\Phi(Q) \Phi(K)^T)_{i,j} = \phi(q_i)^T \phi(k_j)$, so the cell $(i,i)$ of $D$ 
+is $\sum_{j=1}^L \phi(q_i)^T \phi(k_j) = \phi(q_i)^T \sum_{j=1}^L \phi(k_j)$. With this, we can compute $\sum_{j=1}^L \phi(k_j)$ independently and store it.
+With this, we then compute $\phi(q_i)^T \sum_{j=1}^L \phi(k_j)$ for each row $i$ of $\Phi(Q)$, which has complexity $O(L M)$. Since the last thing we need to do is 
+to invert the diagonal matrix, and the complexity of this is $O(L)$, the complexity of calculating $D^{-1}$ is $O(L M)$.
+
+\bigskip
+
+Now, to avoid a complexity that is squared in $L$, we need to do the matriz products in a different order. We know that the dimensions of each matriz in the approximation are:
+$D^{-1}$ is $L\times L$, $\Phi(Q)$ is $L\times M$, $\Phi(K)^T$ is $M\times L$, $V$ is $L\times D$. Since we want a complexity that is linear in $L$, we need to do the matrix products in the order:
+$\Phi(K)^T \times V$, $\Phi(Q) \times (\Phi(K)^T \times V)$, $D^{-1} \times (\Phi(Q) \times (\Phi(K)^T \times V))$. So let's compute the complexity of each matrix product.
+
+\bigskip
+
+Since $\Phi(K)^T$ is $M\times L$ and $V$ is $L\times D$, the complexity of $\Phi(K)^T \times V$ is $O(M L D)$. The result of this product is a matrix of size $M\times D$.
+
+The second product has $\Phi(Q)$, which is $L\times M$, and the result of the previous product, which is $M\times D$. So the complexity of this product is $O(L M D)$. 
+The result of this product is a matrix of size $L\times D$.
+
+The last product has $D^{-1}$, which is $L\times L$, and the result of the previous product, which is $L\times D$. So the complexity of this product is $O(L^2 D)$. 
+To avoid a complexity that is squared in $L$, we cannot do this product. Since $D^{-1}$ is a diagonal matrix, in reality we don't need to do this product, but only need to divide
+each row of the previous product by the corresponding cell of $D^{-1}$. So the complexity of this operation is $O(L D)$, since division is $O(1)$ and there are 
+$L \times D$ cells to divide.
+
+\bigskip
+
+So the overall complexity of the approximation is $O(L M) + O(M L D) + O(L M D) + O(L D) = O(L M D)$, which is linear in $L$.
+
 \section{Question 2}
 
 \subsection{Question 2.1}
