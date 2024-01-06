@@ -72,6 +72,77 @@ This means that the complexity of computing $Z$ is quadratic in the length of th
 
 \subsection{Question 1.2}
 
+For this exercise we will use the McLaurin series expansion of the exponential function to approximate the softmax and reduce the computational 
+computational complexity. The McLaurin series expansion of the exponential function is given by:
+
+\bigskip
+
+$exp(t) = \sum_{n=0}^{\infty} \frac{t^n}{n!}$
+
+\bigskip
+
+First, considering $exp(t) \approx 1 + t + \frac{t^2}{2}, $ we want to create a feature map $\phi: \mathbb{R}^D \rightarrow \mathbb{R}^M$ such that, 
+for arbitrary $q \in \mathbb{R}^D$ and $k \in \mathbb{R}^D$ we have $exp(q^Tk) \approx \phi(q)^T \phi(k)$.
+
+With this, we want to find a mapping $\phi$ such that:
+$ \phi(q)^T \phi(k) = 1 + q^Tk + \frac{(q^Tk)^2}{2} $
+
+\bigskip
+
+The first two terms of the series are trivial, since we can define $\phi(q) = [1, q_1, \dots, q_n]$. 
+For the third term, we need to decompose the square of the dot product of $q$ and $k$ into a sum of products of the elements of $q$ and $k$.
+
+For vectors $x$ and $z$ with the same dimension $n$, we have that $x^Tz = \sum_{i=1}^{D} x_iz_i$.
+Now for the square of the doct product we have:
+
+\medskip
+
+$ (x^Tz)^2 = (x_1z_1 + \dots + x_n)(x_1z_1 + \dots + x_nz_n) = \\
+(x_1z_1)^2 + 2x_1z_1x_2z_2 + \dots + 2x_1z_1x_nz_n + \\
++ (x_2z_2)^2 + \dots + x_2z_2x_nz_n + \\
+\dots + \\
+ (x_nz_n)^2 = \\
+\sum_{i=1}^n (x_i)^2(z_i)^2 + 2\sum_{i=1}^{n-1} \sum_{j=i+1}^{n} x_iz_ix_jz_j \\
+$
+
+This way we can define $\phi(x) = [1, x_1, \dots, x_n, 
+\frac{1}{\sqrt{2}}x_1^{2}, x_1x_2, \dots, x_1x_n, \frac{1}{\sqrt{2}}x_2^{2}, \dots, 
+x_2x_n, \dots, x_{n-1}x_n , \frac{1}{\sqrt{2}}x_n^{2}]$
+
+With this $exp(q^Tk) \approx \phi(q)^T \phi(k)$, and we can use this to approximate the softmax function.
+
+\bigskip
+
+In terms of dimensionality, if the vector $x$ has dimension $D$, the first two terms of the series will have dimension $D + 1$. From the 
+third term, we can see that the number of terms will be $\sum_{i=1}^{D} i = \frac{D(D+1)}{2}$. With this, for $K = 2$, 
+the vector $\phi(x)$ will have dimension $M = 1 + D + \frac{D(D+1)}{2}$.
+
+\bigskip
+
+Now we want to acess what would be the dimensionality of the feature space $M$ if we used the McLaurin series with $K \geq 3$ terms.
+For this, we have to acess the dimensionality of each term.
+
+\bigskip
+
+According to the multinomial theorem:
+
+\medskip
+
+$ (x_1 + x_2 + \dots + x_D)^K = \sum_{k_1 + k_2 + \dots + k_D = K, k_1, k_2, \dots, k_D\geq0} \binom{n}{k_1, k_2, \dots, k_D} \prod_{t=1}^D x_t^{k_t}$
+
+where $\binom{n}{k_1, k_2, \dots, k_D} = \frac{n!}{k_1!k_2!\dots k_D!}$
+
+\bigskip
+
+According to this theorem, the number of multinomial coefficients is given by $\binom{K + D - 1}{D - 1}$, and thus, the number of terms in the expansion for the $K-th$ is
+$\binom{K + D - 1}{D - 1}$.
+
+\bigskip
+
+With this, for $K \geq 3$, the dimensionality of the feature space will be:
+
+$M = \sum \binom{K + D - 1}{D - 1}$
+
 \subsection{Question 1.3}
 
 \subsection{Question 1.4}
