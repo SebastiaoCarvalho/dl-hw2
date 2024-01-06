@@ -72,8 +72,8 @@ This means that the complexity of computing $Z$ is quadratic in the length of th
 
 \subsection{Question 1.2}
 
-For this exercise we will use the McLaurin series expansion of the exponential function to approximate the softmax and reduce the computational 
-computational complexity. The McLaurin series expansion of the exponential function is given by:
+For this exercise, we will use the McLaurin series expansion of the exponential function, to approximate the softmax and reduce the computational 
+complexity. The McLaurin series expansion of the exponential function is given by:
 
 \bigskip
 
@@ -81,35 +81,33 @@ $exp(t) = \sum_{n=0}^{\infty} \frac{t^n}{n!}$
 
 \bigskip
 
-First, considering $exp(t) \approx 1 + t + \frac{t^2}{2}, $ we want to create a feature map $\phi: \mathbb{R}^D \rightarrow \mathbb{R}^M$ such that, 
-for arbitrary $q \in \mathbb{R}^D$ and $k \in \mathbb{R}^D$ we have $exp(q^Tk) \approx \phi(q)^T \phi(k)$.
+Firstly, considering $exp(t) \approx 1 + t + \frac{t^2}{2}, $ we want to create a feature map $\phi: \mathbb{R}^D \rightarrow \mathbb{R}^M$ such that, 
+for an arbitrary $q \in \mathbb{R}^D$ and $k \in \mathbb{R}^D$ we have $exp(q^Tk) \approx \phi(q)^T \phi(k)$.
 
 With this, we want to find a mapping $\phi$ such that:
-$ \phi(q)^T \phi(k) = 1 + q^Tk + \frac{(q^Tk)^2}{2} $
+$ \phi(q)^T \phi(k) = 1 + q^Tk + \frac{(q^Tk)^2}{2}$.
 
 \bigskip
 
 The first two terms of the series are trivial, since we can define $\phi(q) = [1, q_1, \dots, q_n]$. 
-For the third term, we need to decompose the square of the dot product of $q$ and $k$ into a sum of products of the elements of $q$ and $k$.
+For the third term, we need to decompose the square of the dot product of $q$ and $k$, into a sum of products of the elements of $q$ and $k$.
 
-For vectors $x$ and $z$ with the same dimension $n$, we have that $x^Tz = \sum_{i=1}^{D} x_iz_i$.
+For vectors $x$ and $z$ with the same dimension, $n$, we have that $x^Tz = \sum_{i=1}^{D} x_iz_i$.
 Now for the square of the doct product we have:
 
 \medskip
 
 $ (x^Tz)^2 = (x_1z_1 + \dots + x_n)(x_1z_1 + \dots + x_nz_n) = \\
-(x_1z_1)^2 + 2x_1z_1x_2z_2 + \dots + 2x_1z_1x_nz_n + \\
-+ (x_2z_2)^2 + \dots + x_2z_2x_nz_n + \\
-\dots + \\
- (x_nz_n)^2 = \\
-\sum_{i=1}^n (x_i)^2(z_i)^2 + 2\sum_{i=1}^{n-1} \sum_{j=i+1}^{n} x_iz_ix_jz_j \\
-$
+(x_1z_1)^2 + 2x_1z_1x_2z_2 + \dots + 2x_1z_1x_nz_n + 
++ (x_2z_2)^2 + \dots + x_2z_2x_nz_n + \dots + (x_nz_n)^2 = \\
+\sum_{i=1}^n (x_i)^2(z_i)^2 + 2\sum_{i=1}^{n-1} \sum_{j=i+1}^{n} x_iz_ix_jz_j$\\
 
-This way we can define $\phi(x) = [1, x_1, \dots, x_n, 
+
+This way, we can define $\phi(x) = [1, x_1, \dots, x_n, 
 \frac{1}{\sqrt{2}}x_1^{2}, x_1x_2, \dots, x_1x_n, \frac{1}{\sqrt{2}}x_2^{2}, \dots, 
-x_2x_n, \dots, x_{n-1}x_n , \frac{1}{\sqrt{2}}x_n^{2}]$
+x_2x_n, \dots, x_{n-1}x_n , \frac{1}{\sqrt{2}}x_n^{2}]$.
 
-With this $exp(q^Tk) \approx \phi(q)^T \phi(k)$, and we can use this to approximate the softmax function.
+With this, $exp(q^Tk) \approx \phi(q)^T \phi(k)$, and we can use this to approximate the softmax function.
 
 \bigskip
 
@@ -119,7 +117,7 @@ the vector $\phi(x)$ will have dimension $M = 1 + D + \frac{D(D+1)}{2}$.
 
 \bigskip
 
-Now we want to acess what would be the dimensionality of the feature space $M$ if we used the McLaurin series with $K \geq 3$ terms.
+Now, we want to acess what would be the dimensionality of the feature space $M$, if we used the McLaurin series with $K \geq 3$ terms.
 For this, we have to acess the dimensionality of each term.
 
 \bigskip
@@ -128,29 +126,27 @@ According to the multinomial theorem:
 
 \medskip
 
-$ (x_1 + x_2 + \dots + x_D)^K = \sum_{k_1 + k_2 + \dots + k_D = K, k_1, k_2, \dots, k_D\geq0} \binom{n}{k_1, k_2, \dots, k_D} \prod_{t=1}^D x_t^{k_t}$
+$ (x_1 + x_2 + \dots + x_D)^K = \sum_{k_1 + k_2 + \dots + k_D = K, k_1, k_2, \dots, k_D\geq0} \binom{n}{k_1, k_2, \dots, k_D} \prod_{t=1}^D x_t^{k_t}$,
 
-where $\binom{n}{k_1, k_2, \dots, k_D} = \frac{n!}{k_1!k_2!\dots k_D!}$
+where $\binom{n}{k_1, k_2, \dots, k_D} = \frac{n!}{k_1!k_2!\dots k_D!}$.
 
 \bigskip
 
-To prove the number of terms in the expansion for the $K-th$ term is $\binom{K + D - 1}{D - 1}$, we will use the star and bars method.
+To prove that the number of terms in the expansion for the $K$-th term is $\binom{K + D - 1}{D - 1}$, we will use the stars and bars method.
 
-We know that from combinatorics, for any pair of positive integers $n$ and $k$, the number of $k$-tuples of non-negative integers whose sum is $n$ is equal to the number of 
+We know that from combinatorics, for any pair of positive integers $n$ and $k$, the number of $k$-tuples of non-negative integers whose sum is $n$, is equal to the number of 
 multisets of cardinality $n$ taken from a set of size $k$, or equivalently, the number of multisets of cardinality $k - 1$ taken from a set of size $n + 1$.
 
 Using the stars and bars methods, to show that there are $\binom{K + D -1}{D - 1}$ possible arrangements, observe that any arrangement of stars and bars consists of a 
 total of $D + K - 1$ objects, $K$ of which are stars and $D - 1$ of which are bars. We only need to pick $D - 1$ of the $K + D - 1$ 
 positions to be bars. 
 
-Since $k_1 + k_2 + \dots + k_D = K$, we can apply this combinatorics theorem and know that the number of $k$-tuples of non-negative integers whose sum is $K$ is equal to
-$\binom{K + D - 1}{D - 1}$, and thus, the number of terms in the expansion for the $K-th$ term is $\binom{K + D - 1}{D - 1}$.
+Since $k_1 + k_2 + \dots + k_D = K$, we can apply this combinatorics theorem and know that the number of $k$-tuples of non-negative integers whose sum is $K$, is equal to
+$\binom{K + D - 1}{D - 1}$, and thus, the number of terms in the expansion for the $K$-th term is $\binom{K + D - 1}{D - 1}$.
 
 \bigskip
 
-With this, for $K \geq 3$, the dimensionality of the feature space will be:
-
-$M = \sum \binom{K + D - 1}{D - 1}$
+With this, for $K \geq 3$, the dimensionality of the feature space will be: $M = \sum \binom{K + D - 1}{D - 1}$.
 
 \subsection{Question 1.3}
 
