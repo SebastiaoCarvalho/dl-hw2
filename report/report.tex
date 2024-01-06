@@ -23,11 +23,7 @@
 
 \subsection{Question 1.1}
 
-Using a single attention head, the output $Z$ is given by:
-
-\begin{equation}
-    Z = \text{softmax} \left( \frac{QK^T}{\sqrt{d_k}} \right) V
-\end{equation}
+Using a single attention head, the output $Z$ is given by $Z = \text{softmax} \left(QK^T\right) V$ .
 
 The complexity of computing this $Z$, is the complexity of computing all the matrix multiplications and the softmax.
 
@@ -41,19 +37,18 @@ $
 The complexity of computing a matrix product $AB$, where $A \in \mathbb{R}^{m \times n}$ and $B \in \mathbb{R}^{n \times p}$, is $O(mnp)$.
 We can prove this by taking into account that, to compute the element $c_{ij}$ of the matrix $C = AB$, we need to compute the dot product between the $i$-th row of 
 $A$ and the $j$-th column of $B$, and this dot product has complexity of $O(n)$, because it is the sum of $n$ products of real numbers.
-Since we need to compute $mn$ elements of $C$, the complexity of computing $C$ is $O(mnp)$.
+Since we need to compute $mp$ elements of $C$, the complexity of computing $C$ is $O(mnp)$.
 
 \bigskip
 
-Let's now consider $P = softmax \left( \frac{QK^T}{\sqrt{d_k}} \right)$. With this $P$, we can compute $Z = PV$.
+Let's now consider $P = softmax \left(QK^T\right)$. With this $P$, we can compute $Z = PV$.
 
 In our case, we first need to compute $QK^T$ and since $Q \in \mathbb{R}^{L \times D}$ and $K^T \in \mathbb{R}^{D \times L}$, 
 the complexity of this operation is $O(L^2D)$.
 
-Then, we need to divide each element of $QK^T$ by $\sqrt{d_k}$, which has complexity of $O(L^2)$.
-Finally, we need to compute the softmax of each row of the matrix $QK^T / \sqrt{d_k}$, which has complexity of $O(L^2)$.
+Finally, we need to compute the softmax of each row of the matrix $QK^T$, which has complexity of $O(L^2)$.
 The complexity of computing $P$ is $O(L^2D + L^2 + L^2) = O(L^2D)$. 
-Since $P = softmax \left( \frac{QK^T}{\sqrt{d_k}} \right)$, $P \in \mathbb{R}^{L \times L}$.
+Since $P = softmax \left(QK^T\right)$, $P \in \mathbb{R}^{L \times L}$.
 
 \bigskip
 
