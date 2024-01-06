@@ -117,8 +117,8 @@ the vector $\phi(x)$ will have dimension $M = 1 + D + \frac{D(D+1)}{2}$.
 
 \bigskip
 
-Now, we want to acess what would be the dimensionality of the feature space $M$, if we used the McLaurin series with $K \geq 3$ terms.
-For this, we have to acess the dimensionality of each term.
+Now, we want to assess what would be the dimensionality of the feature space $M$, if we used the McLaurin series with $K \geq 3$ terms.
+For this, we have to assess the dimensionality of each term.
 
 \bigskip
 
@@ -156,7 +156,7 @@ Now let's consider the mapping $\Phi$ where $\Phi(X)$, which results in a matrix
 Our goal is to show that the self-attention operation can be approximated as $Z \approx D^{-1}\Phi(Q) \Phi(K)^T V$, 
 where $D = Diag(\Phi(Q) \Phi(K)^T 1_L)$. 
 
-Looking at the original self-attention operation, we can see that the diffence is that now we want to approximate
+Looking at the original self-attention operation, we can see that the difference, is that now we want to approximate
 $softmax(QK^T)$ as $D^{-1}\Phi(Q) \Phi(K)^T$.
 
 Considering $softmax(QK^T)_{ij} = \frac{exp(q_i^Tk_j)}{\sum_{l=1}^L exp(q_i^Tk_l)}$, since we want
@@ -186,22 +186,22 @@ $
 
 \medskip
 
-Since $\phi(q_i)$ is spread along the $i$-th row, for the $(i,j)$-th element of the matrix $\Phi(Q) \Phi(K)^T$ we have that cell $i,j$ is equal to $
+Since $\phi(q_i)$ is spread along the $i$-th row, for the $(i,j)$-th element of the matrix $\Phi(Q) \Phi(K)^T$ we have that the cell $i,j$ is equal to $
 phi(q_i)_1 \phi(k_j)_1 + phi(q_i)_2 \phi(k_j)_2 + \dots + phi(q_i)_M \phi(k_j)_M = \phi(q_i)^T \phi(k_j)$.
 
-With this we can see that $\Phi(Q) \Phi(K)^T$ is a matrix whose $(i,j)$-th element is $\phi(q_i)^T \phi(k_j)$.
+With this, we can see that $\Phi(Q) \Phi(K)^T$ is a matrix whose $(i,j)$-th element, is equal to $\phi(q_i)^T \phi(k_j)$.
 
 We know that $\phi(q)^T\phi(k) \approx exp(q^Tk)$, so we can see that $\Phi(Q) \Phi(K)^T$ is a matrix whose $(i,j)$-th element is an 
-approximation $exp(q_i^Tk_j)$.
+approximation of $exp(q_i^Tk_j)$.
 
 \bigskip
 
 Now let's look at $D$. We know that $D = Diag(\Phi(Q) \Phi(K)^T 1_L)$. Since $\Phi(Q) \Phi(K)^T$ is a matrix whose $(i,j)$-th element is an
 approximation $exp(q_i^Tk_j)$, and $1_L$ is a vector of ones, the product $\Phi(Q) \Phi(K)^T 1_L$ will be a vector whose $i$-th element
-is an approximation of $\sum_{j=1}^L exp(q_i^Tk_j)$, since it is the sum of the $i$-th row of $\Phi(Q) \Phi(K)^T$.
+is an approximation of $\sum_{j=1}^L exp(q_i^Tk_j)$, given it is the sum of the $i$-th row of $\Phi(Q) \Phi(K)^T$.
 
 With this, we can see that $D \in \mathbb{R}^{L\times L}$ is a diagonal matrix whose $(i, i)$-th element is an approximation of $\sum_{j=1}^L exp(q_i^Tk_j)$.
-Since this is a diagonal matrix, and the inverse of a diagonal matrix is a diagonal matrix whose $(i, i)$-th element is the inverse of the $(i, i)$-th element
+Since this is a diagonal matrix, and the inverse of a diagonal matrix is a diagonal matrix whose $(i, i)$-th element is the inverse of the $(i, i)$-th element,
 we can see that $D^{-1}$ is a diagonal matrix whose $(i, i)$-th element is an approximation of $\frac{1}{\sum_{j=1}^L exp(q_i^Tk_j)}$.
 
 \bigskip
@@ -211,25 +211,25 @@ the softmax operation, which is what we wanted to show. With this, we can see th
 
 \subsection{Question 1.4}
 
-Now we wish to use the above approximation to obtain a computanional complexity that is linear in L. First let us compute the computanional complexity of the
-approximation. First we need the complexity of calculating $\Phi(Q)$ and $\Phi(K)$.
+Now we wish to use the above approximation to obtain a computational complexity that is linear in L. First, let us compute the computational complexity of the
+approximation. For that, we need the complexity of calculating $\Phi(Q)$ and $\Phi(K)$.
 
 Since to compute each row of $\Phi(Q)$ and $\Phi(K)$ we need to compute $\phi(q_i)$ and $\phi(k_i)$, and the complexity of this is $O(M)$, 
 the complexity of calculating $\Phi(Q)$ and $\Phi(K)$ is $O(L M)$.
 
 \bigskip
 
-Now the complexity of calculating $D^{-1}$. This is a diagonal matrix of the inverse of the sum of the rows of $\Phi(Q) \Phi(K)^T$. So the cost of computing $D^{-1}$ is the cost
+Now, we want the complexity of calculating $D^{-1}$. This is a diagonal matrix, of the inverse of the sum of the rows of $\Phi(Q) \Phi(K)^T$. Because of that, the cost of computing $D^{-1}$ is the cost
 of computing the sum of the rows of $\Phi(Q) \Phi(K)^T$. We know that $(\Phi(Q) \Phi(K)^T)_{i,j} = \phi(q_i)^T \phi(k_j)$, so the cell $(i,i)$ of $D$ 
 is $\sum_{j=1}^L \phi(q_i)^T \phi(k_j) = \phi(q_i)^T \sum_{j=1}^L \phi(k_j)$. With this, we can compute $\sum_{j=1}^L \phi(k_j)$ independently and store it.
-With this, we then compute $\phi(q_i)^T \sum_{j=1}^L \phi(k_j)$ for each row $i$ of $\Phi(Q)$, which has complexity $O(L M)$. Since the last thing we need to do is 
+Having done that, we then compute $\phi(q_i)^T \sum_{j=1}^L \phi(k_j)$ for each row $i$ of $\Phi(Q)$, which has complexity $O(L M)$. Since the last thing we need to do is 
 to invert the diagonal matrix, and the complexity of this is $O(L)$, the complexity of calculating $D^{-1}$ is $O(L M)$.
 
 \bigskip
 
-Now, to avoid a complexity that is squared in $L$, we need to do the matriz products in a different order. We know that the dimensions of each matriz in the approximation are:
-$D^{-1}$ is $L\times L$, $\Phi(Q)$ is $L\times M$, $\Phi(K)^T$ is $M\times L$, $V$ is $L\times D$. Since we want a complexity that is linear in $L$, we need to do the matrix products in the order:
-$\Phi(K)^T \times V$, $\Phi(Q) \times (\Phi(K)^T \times V)$, $D^{-1} \times (\Phi(Q) \times (\Phi(K)^T \times V))$. So let's compute the complexity of each matrix product.
+Now, to avoid a complexity that is squared in $L$, we need to calculate the matrix products in a different order. We know that the dimensions of each matrix in the approximation are:
+$L\times L$ for $D^{-1}$, $L\times M$ for $\Phi(Q)$, $M\times L$ for $\Phi(K)^T$ and $L\times D$ for $V$. Since we want a complexity that is linear in $L$, we need to do the matrix products in the order:
+$\Phi(K)^T \times V$, $\Phi(Q) \times (\Phi(K)^T \times V)$ and $D^{-1} \times (\Phi(Q) \times (\Phi(K)^T \times V))$. Let's compute the complexity of each matrix product.
 
 \bigskip
 
@@ -238,14 +238,14 @@ Since $\Phi(K)^T$ is $M\times L$ and $V$ is $L\times D$, the complexity of $\Phi
 The second product has $\Phi(Q)$, which is $L\times M$, and the result of the previous product, which is $M\times D$. So the complexity of this product is $O(L M D)$. 
 The result of this product is a matrix of size $L\times D$.
 
-The last product has $D^{-1}$, which is $L\times L$, and the result of the previous product, which is $L\times D$. So the complexity of this product is $O(L^2 D)$. 
-To avoid a complexity that is squared in $L$, we cannot do this product. Since $D^{-1}$ is a diagonal matrix, in reality we don't need to do this product, but only need to divide
-each row of the previous product by the corresponding cell of $D^{-1}$. So the complexity of this operation is $O(L D)$, since division is $O(1)$ and there are 
+The last product has $D^{-1}$, which is $L\times L$, and the result of the previous product, which is $L\times D$ and so, the complexity of this product is $O(L^2 D)$. 
+To avoid a complexity that is squared in $L$, we cannot do this product. Since $D^{-1}$ is a diagonal matrix, in reality, we don't need to do this product, but only need to divide
+each row of the previous product by the corresponding cell of $D^{-1}$. Due to that, the complexity of this operation is $O(L D)$, since the division is $O(1)$ and there are 
 $L \times D$ cells to divide.
 
 \bigskip
 
-So the overall complexity of the approximation is $O(L M) + O(M L D) + O(L M D) + O(L D) = O(L M D)$, which is linear in $L$.
+Finally, the overall complexity of the approximation is $O(L M) + O(M L D) + O(L M D) + O(L D) = O(L M D)$, which is linear in $L$.
 
 \section{Question 2}
 
